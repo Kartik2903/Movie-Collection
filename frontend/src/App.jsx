@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 
 const API_URL = 'http://localhost:3001/movies';
 
-function App() {
   const [movies, setMovies] = useState([]);
   const [form, setForm] = useState({
     title: '',
@@ -59,11 +58,11 @@ function App() {
 
   const handleEdit = (movie) => {
     setForm({
-      title: movie.title,
-      director: movie.director,
-      genre: movie.genre,
-      release_year: movie.release_year,
-      rating: movie.rating,
+      title: movie.title || '',
+      director: movie.director || '',
+      genre: movie.genre || '',
+      release_year: movie.release_year ? String(movie.release_year) : '',
+      rating: movie.rating ? String(movie.rating) : '',
       image_url: movie.image_url || ''
     });
     setEditingId(movie.id);
@@ -82,11 +81,14 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 p-4 relative">
+      {/* Anchor for scrolling */}
+      <div ref={formRef}></div>
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
         <h1 className="text-3xl font-extrabold mb-6 text-center text-purple-700 tracking-tight">🎬 Movies Collection</h1>
         {error && <div className="bg-red-100 text-red-700 p-2 mb-4 rounded">{error}</div>}
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 bg-gray-50 p-6 rounded-xl shadow">
+  <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 bg-gray-50 p-6 rounded-xl shadow">
+
           <input className="border p-2 rounded focus:ring-2 focus:ring-purple-400" name="title" value={form.title} onChange={handleChange} placeholder="Title" required />
           <input className="border p-2 rounded focus:ring-2 focus:ring-purple-400" name="director" value={form.director} onChange={handleChange} placeholder="Director" required />
           <input className="border p-2 rounded focus:ring-2 focus:ring-purple-400" name="genre" value={form.genre} onChange={handleChange} placeholder="Genre" required />
